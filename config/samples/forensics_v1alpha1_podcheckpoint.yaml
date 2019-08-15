@@ -1,0 +1,10 @@
+apiVersion: forensics.orkaproj.io/v1alpha1
+kind: PodCheckpoint
+metadata:
+  name: podcheckpoint-sample
+  namespace: forensics-system
+spec:
+  destination: s3://my-bucket-123456789000-us-west-2
+  subpath: forensics
+  pod: bad-pod-1234567890-dead1
+  namespace: default

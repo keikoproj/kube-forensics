@@ -1,0 +1,7 @@
+version: "2"
+domain: orkaproj.io
+repo: github.com/orkaproj/kube-forensics
+resources:
+- group: forensics
+  version: v1alpha1
+  kind: PodCheckpoint

@@ -1,0 +1,28 @@
+FROM alpine:3.6
+MAINTAINER todd.ekenstam@intuit.com
+
+# Add docker
+RUN apk --no-cache --update add docker
+
+# Add aws cli
+RUN apk --no-cache --update add bash curl less groff jq python py-pip && \
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir awscli==1.11.167 s3cmd==2.0.0 https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-1.4-24.tar.gz && \
+    mkdir /root/.aws && \
+    aws --version && \
+    s3cmd --version
+
+# Install kubectl
+RUN mkdir -p /usr/local/bin \
+    && echo Downloading https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && chmod +x kubectl \
+    && mv kubectl /usr/local/bin
+
+# Install application binary
+COPY ./kube-forensics-worker.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/kube-forensics-worker.sh
+
+# This is a 'oneshot' batch job pod. Run the command and terminate.
+CMD ["bash", "/usr/local/bin/kube-forensics-worker.sh"]
+ENTRYPOINT []
