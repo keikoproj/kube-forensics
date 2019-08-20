@@ -38,20 +38,20 @@ jobs:
       - make test
       - bash <(curl -s https://codecov.io/bash)
 
-    - stage: publish-image
-      if: type IN (push)
-      script:
-      - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-      - if [ $TRAVIS_EVENT_TYPE = push ]; then export IMG=orkaproj/instance-manager:$TRAVIS_BRANCH; fi
-      - make docker-build
-      - make docker-push
+    # - stage: publish-image
+    #   if: type IN (push)
+    #   script:
+    #   - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+    #   - if [ $TRAVIS_EVENT_TYPE = push ]; then export IMG=orkaproj/instance-manager:$TRAVIS_BRANCH; fi
+    #   - make docker-build
+    #   - make docker-push
 
-    - stage: functional-test
-      if: type = cron
-      env:
-        - PREFIX=nightly
-        - INSTANCEMGR_TAG=master
-      script:
-      - export SECURITY_GROUPS=$(aws cloudformation describe-stacks --stack-name $PREFIX-eks-node-security-group --query "Stacks[0].Outputs[?OutputKey=='SecurityGroup'].OutputValue" --output text)
-      - aws eks update-kubeconfig --name $EKS_CLUSTER
-      - make bdd
+    # - stage: functional-test
+    #   if: type = cron
+    #   env:
+    #     - PREFIX=nightly
+    #     - INSTANCEMGR_TAG=master
+    #   script:
+    #   - export SECURITY_GROUPS=$(aws cloudformation describe-stacks --stack-name $PREFIX-eks-node-security-group --query "Stacks[0].Outputs[?OutputKey=='SecurityGroup'].OutputValue" --output text)
+    #   - aws eks update-kubeconfig --name $EKS_CLUSTER
+    #   - make bdd
