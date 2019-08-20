@@ -35,7 +35,7 @@ jobs:
     - stage: unit-test
       if: type IN (push, pull_request)
       script:
-      - go test -v -mod=vendor ./controllers/... -coverprofile coverage.txt
+      - make test
       - bash <(curl -s https://codecov.io/bash)
 
     - stage: publish-image
