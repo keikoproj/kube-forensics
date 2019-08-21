@@ -70,9 +70,10 @@ type PodCheckpointStatus struct {
 	Failed int32 `json:"failed,omitempty" protobuf:"varint,6,opt,name=failed"`
 }
 
+// PodCheckpointConditionType is used to define valid conditions.
 type PodCheckpointConditionType string
 
-// These are valid conditions of a PodSaveState.
+// These are valid conditions of a PodCheckpoint.
 const (
 	// JobComplete means the job has completed its execution.
 	PodCheckpointComplete PodCheckpointConditionType = "Complete"
@@ -80,10 +81,10 @@ const (
 	PodCheckpointFailed PodCheckpointConditionType = "Failed"
 )
 
-// PodSaveStateCondition describes current state of a PodSaveState.
+// PodCheckpointCondition describes current state of a PodCheckpoint.
 type PodCheckpointCondition struct {
 	// Type of job condition, Complete or Failed.
-	Type PodCheckpointConditionType `json:"type" protobuf:"bytes,1,opt,name=type,casttype=PodSaveStateConditionType"`
+	Type PodCheckpointConditionType `json:"type" protobuf:"bytes,1,opt,name=type,casttype=PodCheckpointConditionType"`
 	// Status of the condition, one of True, False, Unknown.
 	Status corev1.ConditionStatus `json:"status" protobuf:"bytes,2,opt,name=status,casttype=k8s.io/api/core/v1.ConditionStatus"`
 	// Last time the condition was checked.

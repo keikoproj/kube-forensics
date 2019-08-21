@@ -2,7 +2,7 @@
 
 # set -x
 
-echo "Welcome to pod-savestate-worker!"
+echo "Welcome to kube-forensics-worker!"
 
 export timestamp=$(date +"%s")
 short_container_id=${CONTAINER_ID:0:12}
@@ -19,7 +19,7 @@ echo Short Container ID: $short_container_id
 echo Subpath: $SUBPATH
 echo Destination Bucket: $DEST_BUCKET
 
-local_dest_dir=/savestate/${SUBPATH}/${timestamp}
+local_dest_dir=/forensics/${SUBPATH}/${timestamp}
 mkdir -p ${local_dest_dir}
 
 kubectl describe pod ${POD_NAME} -n ${NAMESPACE} > ${local_dest_dir}/${POD_NAME}.txt

@@ -10,12 +10,13 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-// K8s client can be overridden for unit testing
+// KubernetesAPI allows the K8s client to be overridden for unit testing
 type KubernetesAPI struct {
 	Suffix string
 	Client kubernetes.Interface
 }
 
+// GetContainerIdsForPod is a helper function to get a list of all the container Ids in a Pod
 func (k KubernetesAPI) GetContainerIdsForPod(podName string, ns string) ([]string, string, error) {
 	var options metav1.GetOptions
 	pod, err := k.Client.CoreV1().Pods(ns).Get(podName, options)
@@ -47,7 +48,8 @@ func (k KubernetesAPI) GetContainerIdsForPod(podName string, ns string) ([]strin
 	return s, pod.Spec.NodeName, err
 }
 
-func (k KubernetesAPI) CreateJobFromJson(jobAsJson string, ns string) error {
+// CreateJobFromJSON is a helper function to unmarshal json into a Job object
+func (k KubernetesAPI) CreateJobFromJSON(jobAsJson string, ns string) error {
 
 	var p batchv1.Job
 	err := json.Unmarshal([]byte(jobAsJson), &p)
