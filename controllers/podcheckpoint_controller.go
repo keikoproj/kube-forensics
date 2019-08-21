@@ -66,6 +66,7 @@ func ignoreNotFound(err error) error {
 // +kubebuilder:rbac:groups=forensics.orkaproj.io,resources=podcheckpoints,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=forensics.orkaproj.io,resources=podcheckpoints/status,verbs=get;update;patch
 
+// Reconcile is the main entry point for comparing current state of custom resource with desired state and converge to the desired state
 func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	ctx := context.Background()
 	log := r.Log.WithValues("podcheckpoint", req.NamespacedName)
@@ -93,7 +94,7 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 				"instance.Status", podCheckpoint.Status,
 				"instance.Spec", podCheckpoint.Spec,
 			)
-			// Set the PodSaveState status based on the status of the owned Job
+			// Set the PodCheckpoint status based on the status of the owned Job
 			status := &forensicsv1alpha1.PodCheckpointStatus{
 				StartTime:      &metav1.Time{Time: time.Now()},
 				CompletionTime: &metav1.Time{Time: time.Now()},
@@ -133,12 +134,12 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 		tok := strings.SplitAfter(containerStatus.ContainerID, "://")
 
 		if len(tok) != 2 || tok[0] != "docker://" {
+			// Return error if invalid containerId is provided.
 			err = utils.CommandError{ID: 1, Result: fmt.Sprintf("Unexpected ContainerID (%s)", containerStatus.ContainerID)}
-			break
-		} else {
-			id := tok[1]
-			s = append(s, id)
+			return ctrl.Result{}, err
 		}
+		id := tok[1]
+		s = append(s, id)
 	}
 
 	job := &batchv1.Job{
@@ -245,6 +246,7 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 	return ctrl.Result{}, nil
 }
 
+// SetupWithManager will configure the controller manager
 func (r *PodCheckpointReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&forensicsv1alpha1.PodCheckpoint{}).

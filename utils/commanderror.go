@@ -2,7 +2,7 @@ package utils
 
 import "fmt"
 
-// This struct used to report errors.
+// CommandError is used to report errors.
 type CommandError struct {
 	ID     int
 	Result string
