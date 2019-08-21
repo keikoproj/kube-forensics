@@ -1,7 +1,8 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= orkaproj/kube-forensics-controller:latest
-WORKERIMG ?= orkaproj/kube-forensics-worker:latest
+TAG ?= latest
+IMG ?= orkaproj/kube-forensics-controller:${TAG}
+WORKERIMG ?= orkaproj/kube-forensics-worker:${TAG}
 
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true"

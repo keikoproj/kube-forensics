@@ -1,7 +1,9 @@
-language: go
+sudo: required
 
 services:
   - docker
+
+language: go
 
 go:
 - 1.12.x
@@ -21,16 +23,22 @@ install:
 
 jobs:
   include:
-
     - stage: unit-test
       if: type IN (push, pull_request)
       script:
       - make test
       - bash <(curl -s https://codecov.io/bash)
 
-    - stage: publish-image
-      if: type = push
+    - stage: publish-latest-image
+      if: branch = master AND type = push
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - make docker-build
       - make docker-push
+
+    - stage: publish-tagged-image
+      if: tag IS present
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - TAG=${TRAVIS_TAG} make docker-build
+      - TAG=${TRAVIS_TAG} make docker-push
