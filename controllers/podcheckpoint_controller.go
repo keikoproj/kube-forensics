@@ -133,12 +133,12 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 		tok := strings.SplitAfter(containerStatus.ContainerID, "://")
 
 		if len(tok) != 2 || tok[0] != "docker://" {
+			// Return error if invalid containerId is provided.
 			err = utils.CommandError{ID: 1, Result: fmt.Sprintf("Unexpected ContainerID (%s)", containerStatus.ContainerID)}
-			break
-		} else {
-			id := tok[1]
-			s = append(s, id)
+			return ctrl.Result{}, err
 		}
+		id := tok[1]
+		s = append(s, id)
 	}
 
 	job := &batchv1.Job{
