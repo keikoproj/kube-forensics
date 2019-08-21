@@ -1,5 +1,14 @@
 # kube-forensics
 
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)][GithubMaintainedUrl]
+[![PR](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)][GithubPrsUrl]
+[![slack](https://img.shields.io/badge/slack-join%20the%20conversation-ff69b4.svg)][SlackUrl]
+
+![version](https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000)
+[![Build Status][BuildStatusImg]][BuildMasterUrl]
+[![codecov][CodecovImg]][CodecovUrl]
+[![Go Report Card][GoReportImg]][GoReportUrl]
+
 > Create checkpoint snapshots of the state of running pods for later off-line analysis.
 
 kube-forensics allows a cluster administrator to dump the current state of a running pod and all its containers so that security professionals can perform off-line forensic analysis.
@@ -150,4 +159,17 @@ Please see [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
 Please see [DEVELOPER.md](.github/DEVELOPER.md).
 
-<!-- Markdown link -->
+<!-- Markdown links -->
+
+[BuildStatusImg]: https://travis-ci.org/orkaproj/kube-forensics.svg?branch=master
+[BuildMasterUrl]: https://travis-ci.org/orkaproj/kube-forensics
+
+[GithubMaintainedUrl]: https://github.com/orkaproj/kube-forensics/graphs/commit-activity
+[GithubPrsUrl]: https://github.com/orkaproj/kube-forensics/pulls
+[SlackUrl]: https://orkaproj.slack.com/app_redirect?channel=kube-forensics
+
+[CodecovImg]: https://codecov.io/gh/orkaproj/kube-forensics/branch/master/graph/badge.svg
+[CodecovUrl]: https://codecov.io/gh/orkaproj/kube-forensics
+
+[GoReportImg]: https://goreportcard.com/badge/github.com/orkaproj/kube-forensics
+[GoReportUrl]: https://goreportcard.com/report/github.com/orkaproj/kube-forensics
