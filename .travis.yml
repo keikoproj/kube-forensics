@@ -1,0 +1,33 @@
+language: go
+
+go:
+- 1.12.x
+
+git:
+  depth: 1
+
+env:
+  global:
+    - GO111MODULE=on
+
+install:
+  # install dependencies needed by jobs
+  - wget https://github.com/kubernetes-sigs/kubebuilder/releases/download/v2.0.0-beta.0/kubebuilder_2.0.0-beta.0_linux_amd64.tar.gz
+  - tar -zxvf  kubebuilder_2.0.0-beta.0_linux_amd64.tar.gz
+  - sudo mv kubebuilder_2.0.0-beta.0_linux_amd64 /usr/local/kubebuilder
+
+jobs:
+  include:
+
+    - stage: unit-test
+      if: type IN (push, pull_request)
+      script:
+      - make test
+      - bash <(curl -s https://codecov.io/bash)
+
+    - stage: publish-image
+      if: type = push
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - make docker-build
+      - make docker-push
