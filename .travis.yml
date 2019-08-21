@@ -10,7 +10,11 @@ env:
   global:
     - GO111MODULE=on
 
-install: skip
+install:
+  # install dependencies needed by jobs
+  - wget https://github.com/kubernetes-sigs/kubebuilder/releases/download/v2.0.0-beta.0/kubebuilder_2.0.0-beta.0_linux_amd64.tar.gz
+  - tar -zxvf  kubebuilder_2.0.0-beta.0_linux_amd64.tar.gz
+  - sudo mv kubebuilder_2.0.0-beta.0_linux_amd64 /usr/local/kubebuilder
 
 jobs:
   include:
@@ -25,7 +29,5 @@ jobs:
       if: type = push
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - export IMG=orkaproj/kube-forensics-controller:$TRAVIS_BRANCH
-      - export WORKERIMG=orkaproj/kube-forensics-worker:$TRAVIS_BRANCH
       - make docker-build
       - make docker-push
