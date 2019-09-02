@@ -35,7 +35,7 @@ rules:
   - update
   - patch
 - apiGroups:
-  - forensics.orkaproj.io
+  - forensics.keikoproj.io
   resources:
   - podcheckpoints
   verbs:
@@ -47,7 +47,7 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - forensics.orkaproj.io
+  - forensics.keikoproj.io
   resources:
   - podcheckpoints/status
   verbs:

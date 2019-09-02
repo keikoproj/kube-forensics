@@ -43,10 +43,10 @@ $ cd kube-forensics
 $ make deploy
 /Users/tekenstam/go/bin/controller-gen "crd:trivialVersions=true" rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 kubectl apply -f config/crd/bases
-customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.orkaproj.io configured
+customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.keikoproj.io configured
 kustomize build config/default | kubectl apply -f -
 namespace/forensics-system unchanged
-customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.orkaproj.io configured
+customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.keikoproj.io configured
 role.rbac.authorization.k8s.io/forensics-leader-election-role unchanged
 clusterrole.rbac.authorization.k8s.io/forensics-manager-role configured
 clusterrole.rbac.authorization.k8s.io/forensics-proxy-role unchanged
@@ -66,7 +66,7 @@ Once the kube-forensics controller is installed, a `PodCheckpoint` spec can be s
 Save the following `yaml` file to `example.yaml` and modify the `destination`, `pod` and `namespace` to valid values for your cluster.
 
 ``` yaml
-apiVersion: forensics.orkaproj.io/v1alpha1
+apiVersion: forensics.keikoproj.io/v1alpha1
 kind: PodCheckpoint
 metadata:
   name: podcheckpoint-sample
@@ -82,7 +82,7 @@ spec:
 
 ``` sh
 $ kubectl apply -f ./config/samples/forensics_v1alpha1_podcheckpoint.yaml
-podcheckpoint.forensics.orkaproj.io/podcheckpoint-sample created
+podcheckpoint.forensics.keikoproj.io/podcheckpoint-sample created
 
 $ kubectl get -n forensics-system PodCheckpoint
 NAME                   AGE
@@ -97,14 +97,14 @@ Name:         podcheckpoint-sample
 Namespace:    forensics-system
 Labels:       <none>
 Annotations:  kubectl.kubernetes.io/last-applied-configuration:
-                {"apiVersion":"forensics.orkaproj.io/v1alpha1","kind":"PodCheckpoint","metadata":{"annotations":{},"name":"podcheckpoint-sample","namespac...
-API Version:  forensics.orkaproj.io/v1alpha1
+                {"apiVersion":"forensics.keikoproj.io/v1alpha1","kind":"PodCheckpoint","metadata":{"annotations":{},"name":"podcheckpoint-sample","namespac...
+API Version:  forensics.keikoproj.io/v1alpha1
 Kind:         PodCheckpoint
 Metadata:
   Creation Timestamp:  2019-08-14T23:19:13Z
   Generation:          2
   Resource Version:    595318
-  Self Link:           /apis/forensics.orkaproj.io/v1alpha1/namespaces/forensics-system/podcheckpoints/podcheckpoint-sample
+  Self Link:           /apis/forensics.keikoproj.io/v1alpha1/namespaces/forensics-system/podcheckpoints/podcheckpoint-sample
   UID:                 edbe3bd6-bee9-11e9-a5c6-0afa5b77e74c
 Spec:
   Destination:  s3://my-bucket-123456789000-us-west-2
@@ -161,15 +161,15 @@ Please see [DEVELOPER.md](.github/DEVELOPER.md).
 
 <!-- Markdown links -->
 
-[BuildStatusImg]: https://travis-ci.org/orkaproj/kube-forensics.svg?branch=master
-[BuildMasterUrl]: https://travis-ci.org/orkaproj/kube-forensics
+[BuildStatusImg]: https://travis-ci.org/keikoproj/kube-forensics.svg?branch=master
+[BuildMasterUrl]: https://travis-ci.org/keikoproj/kube-forensics
 
-[GithubMaintainedUrl]: https://github.com/orkaproj/kube-forensics/graphs/commit-activity
-[GithubPrsUrl]: https://github.com/orkaproj/kube-forensics/pulls
-[SlackUrl]: https://orkaproj.slack.com/app_redirect?channel=kube-forensics
+[GithubMaintainedUrl]: https://github.com/keikoproj/kube-forensics/graphs/commit-activity
+[GithubPrsUrl]: https://github.com/keikoproj/kube-forensics/pulls
+[SlackUrl]: https://keikoproj.slack.com/app_redirect?channel=kube-forensics
 
-[CodecovImg]: https://codecov.io/gh/orkaproj/kube-forensics/branch/master/graph/badge.svg
-[CodecovUrl]: https://codecov.io/gh/orkaproj/kube-forensics
+[CodecovImg]: https://codecov.io/gh/keikoproj/kube-forensics/branch/master/graph/badge.svg
+[CodecovUrl]: https://codecov.io/gh/keikoproj/kube-forensics
 
-[GoReportImg]: https://goreportcard.com/badge/github.com/orkaproj/kube-forensics
-[GoReportUrl]: https://goreportcard.com/report/github.com/orkaproj/kube-forensics
+[GoReportImg]: https://goreportcard.com/badge/github.com/keikoproj/kube-forensics
+[GoReportUrl]: https://goreportcard.com/report/github.com/keikoproj/kube-forensics

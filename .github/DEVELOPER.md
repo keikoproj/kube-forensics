@@ -14,10 +14,10 @@ This document will walk you through setting up a basic testing environment and r
 $ make deploy
 /Users/tekenstam/go/bin/controller-gen "crd:trivialVersions=true" rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 kubectl apply -f config/crd/bases
-customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.orkaproj.io configured
+customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.keikoproj.io configured
 kustomize build config/default | kubectl apply -f -
 namespace/forensics-system unchanged
-customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.orkaproj.io configured
+customresourcedefinition.apiextensions.k8s.io/podcheckpoints.forensics.keikoproj.io configured
 role.rbac.authorization.k8s.io/forensics-leader-election-role unchanged
 clusterrole.rbac.authorization.k8s.io/forensics-manager-role configured
 clusterrole.rbac.authorization.k8s.io/forensics-proxy-role unchanged
@@ -66,7 +66,7 @@ go fmt ./...
 go vet ./...
 /Users/tekenstam/go/bin/controller-gen "crd:trivialVersions=true" rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 go test ./utils/... ./api/... ./controllers/... -coverprofile cover.out
-?   	github.com/orkaproj/kube-forensics/utils	[no test files]
-ok  	github.com/orkaproj/kube-forensics/api/v1alpha1	14.008s	coverage: 1.6% of statements
-ok  	github.com/orkaproj/kube-forensics/controllers	13.465s	coverage: 0.0% of statements
+?   	github.com/keikoproj/kube-forensics/utils	[no test files]
+ok  	github.com/keikoproj/kube-forensics/api/v1alpha1	14.008s	coverage: 1.6% of statements
+ok  	github.com/keikoproj/kube-forensics/controllers	13.465s	coverage: 0.0% of statements
 ```

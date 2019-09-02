@@ -22,7 +22,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	forensicsv1alpha1 "github.com/orkaproj/kube-forensics/api/v1alpha1"
+	forensicsv1alpha1 "github.com/keikoproj/kube-forensics/api/v1alpha1"
 
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"

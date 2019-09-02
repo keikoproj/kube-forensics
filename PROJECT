@@ -1,6 +1,6 @@
 version: "2"
-domain: orkaproj.io
-repo: github.com/orkaproj/kube-forensics
+domain: keikoproj.io
+repo: github.com/keikoproj/kube-forensics
 resources:
 - group: forensics
   version: v1alpha1
