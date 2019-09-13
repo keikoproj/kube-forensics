@@ -32,8 +32,8 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 
 	"github.com/go-logr/logr"
-	forensicsv1alpha1 "github.com/orkaproj/kube-forensics/api/v1alpha1"
-	"github.com/orkaproj/kube-forensics/utils"
+	forensicsv1alpha1 "github.com/keikoproj/kube-forensics/api/v1alpha1"
+	"github.com/keikoproj/kube-forensics/utils"
 )
 
 // PodCheckpointReconciler reconciles a PodCheckpoint object
@@ -63,8 +63,8 @@ func ignoreNotFound(err error) error {
 // +kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;watch
 // +kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=batch,resources=jobs/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=forensics.orkaproj.io,resources=podcheckpoints,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=forensics.orkaproj.io,resources=podcheckpoints/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=forensics.keikoproj.io,resources=podcheckpoints,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=forensics.keikoproj.io,resources=podcheckpoints/status,verbs=get;update;patch
 
 // Reconcile is the main entry point for comparing current state of custom resource with desired state and converge to the desired state
 func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
@@ -159,7 +159,7 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 					Containers: []corev1.Container{
 						{
 							Name:            "kube-forensics-worker",
-							Image:           "orkaproj/kube-forensics-worker:latest",
+							Image:           "keikoproj/kube-forensics-worker:latest",
 							ImagePullPolicy: "Always",
 							VolumeMounts: []corev1.VolumeMount{
 								{

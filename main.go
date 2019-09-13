@@ -21,9 +21,9 @@ import (
 
 	kscheme "k8s.io/client-go/kubernetes/scheme"
 
-	forensicsv1alpha1 "github.com/orkaproj/kube-forensics/api/v1alpha1"
+	forensicsv1alpha1 "github.com/keikoproj/kube-forensics/api/v1alpha1"
 
-	"github.com/orkaproj/kube-forensics/controllers"
+	"github.com/keikoproj/kube-forensics/controllers"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"

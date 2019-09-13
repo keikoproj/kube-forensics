@@ -1,4 +1,4 @@
-module github.com/orkaproj/kube-forensics
+module github.com/keikoproj/kube-forensics
 
 go 1.12
 
