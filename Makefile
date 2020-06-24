@@ -60,8 +60,8 @@ generate: controller-gen
 
 # Build the docker image
 docker-build: test
-	docker build . -t ${IMG}
-	docker build . -t ${WORKERIMG} --file Dockerfile.worker
+	docker build  -f ./controllers/Dockerfile . -t ${IMG}
+	docker build  -f ./worker/Dockerfile.worker . -t ${WORKERIMG}
 	@echo "updating kustomize image patch file for manager resource"
 	sed -i'' -e 's@image: .*@image: '"${IMG}"'@' ./config/default/manager_image_patch.yaml
 
