@@ -1,3 +1,4 @@
+PKGS := ./utils/... ./api/... ./controllers/...
 
 # Image URL to use all building/pushing image targets
 TAG ?= latest
@@ -13,7 +14,14 @@ all: manager
 
 # Run tests
 test: generate fmt vet manifests
-	go test ./utils/... ./api/... ./controllers/... -coverprofile cover.out
+	go test ${PKGS} ${TESTARGS}
+
+cover: TESTARGS=-coverprofile=cover.out
+cover: test
+	go tool cover -func=cover.out -o cover.txt
+	go tool cover -html=cover.out -o cover.html
+	@cat cover.txt
+	@echo "Run 'open cover.html' to view coverage report."
 
 # Build manager binary
 manager: generate fmt vet
