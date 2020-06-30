@@ -59,7 +59,7 @@ generate: controller-gen
 	$(CONTROLLER_GEN) object:headerFile=./hack/boilerplate.go.txt paths=./api/...
 
 # Build the docker image
-docker-build: test
+docker-build:
 	docker build . -t ${IMG}
 	docker build . -t ${WORKERIMG} --file Dockerfile.worker
 	@echo "updating kustomize image patch file for manager resource"
