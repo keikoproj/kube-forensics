@@ -47,9 +47,12 @@ func init() {
 func main() {
 	var metricsAddr string
 	var enableLeaderElection bool
+	var workerNamespace string
+
 	flag.StringVar(&metricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "enable-leader-election", false,
 		"Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
+	flag.StringVar(&workerNamespace, "worker-namespace", "forensics-system", "The target namespace for forensics worker")
 	flag.Parse()
 
 	ctrl.SetLogger(zap.Logger(true))
@@ -65,9 +68,10 @@ func main() {
 	}
 
 	err = (&controllers.PodCheckpointReconciler{
-		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("PodCheckpoint"),
-		Scheme: mgr.GetScheme(),
+		Client:          mgr.GetClient(),
+		Log:             ctrl.Log.WithName("controllers").WithName("PodCheckpoint"),
+		Scheme:          mgr.GetScheme(),
+		WorkerNamespace: workerNamespace,
 	}).SetupWithManager(mgr)
 	if err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PodCheckpoint")
