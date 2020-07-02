@@ -39,8 +39,9 @@ import (
 // PodCheckpointReconciler reconciles a PodCheckpoint object
 type PodCheckpointReconciler struct {
 	client.Client
-	Log    logr.Logger
-	Scheme *runtime.Scheme
+	Log             logr.Logger
+	Scheme          *runtime.Scheme
+	WorkerNamespace string
 }
 
 type realClock struct{}
@@ -145,7 +146,7 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      podCheckpoint.Name + "-job",
-			Namespace: "forensics-system",
+			Namespace: r.WorkerNamespace,
 			Labels: map[string]string{
 				"env": "security",
 			},
