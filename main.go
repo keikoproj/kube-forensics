@@ -48,11 +48,13 @@ func main() {
 	var metricsAddr string
 	var enableLeaderElection bool
 	var workerNamespace string
+	var workerImage string
 
 	flag.StringVar(&metricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "enable-leader-election", false,
 		"Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
 	flag.StringVar(&workerNamespace, "worker-namespace", "forensics-system", "The target namespace for forensics worker")
+	flag.StringVar(&workerImage, "worker-image", "keikoproj/kube-forensics-worker:latest", "The worker image of forensics worker ")
 	flag.Parse()
 
 	ctrl.SetLogger(zap.Logger(true))
@@ -72,6 +74,7 @@ func main() {
 		Log:             ctrl.Log.WithName("controllers").WithName("PodCheckpoint"),
 		Scheme:          mgr.GetScheme(),
 		WorkerNamespace: workerNamespace,
+		WorkerImage:     workerImage,
 	}).SetupWithManager(mgr)
 	if err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PodCheckpoint")

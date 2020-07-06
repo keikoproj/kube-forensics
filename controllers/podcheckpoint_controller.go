@@ -42,6 +42,7 @@ type PodCheckpointReconciler struct {
 	Log             logr.Logger
 	Scheme          *runtime.Scheme
 	WorkerNamespace string
+	WorkerImage     string
 }
 
 type realClock struct{}
@@ -160,7 +161,7 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 					Containers: []corev1.Container{
 						{
 							Name:            "kube-forensics-worker",
-							Image:           "keikoproj/kube-forensics-worker:latest",
+							Image:           r.WorkerImage,
 							ImagePullPolicy: "Always",
 							VolumeMounts: []corev1.VolumeMount{
 								{
