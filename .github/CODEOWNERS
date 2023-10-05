@@ -1,0 +1,8 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# review when someone opens a pull request.
+*       @keikoproj/authorized-approvers
+
+# Admins own root and CI.
+.github/** @keikoproj/keiko-admins @keikoproj/keiko-maintainers
+/*     @keikoproj/keiko-admins @keikoproj/keiko-maintainers
