@@ -17,6 +17,8 @@ package controllers
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"strings"
 	"time"
@@ -144,9 +146,10 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 		s = append(s, id)
 	}
 
+	jobName := buildWorkerJobName(podCheckpoint.Name)
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      podCheckpoint.Name + "-job",
+			Name:      jobName,
 			Namespace: r.WorkerNamespace,
 			Labels: map[string]string{
 				"env": "security",
@@ -154,7 +157,7 @@ func (r *PodCheckpointReconciler) Reconcile(req ctrl.Request) (ctrl.Result, erro
 		},
 		Spec: batchv1.JobSpec{
 			Template: corev1.PodTemplateSpec{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"job": podCheckpoint.Name + "-job"}},
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"job": jobName}},
 				Spec: corev1.PodSpec{
 					NodeName:    pod.Spec.NodeName,
 					HostNetwork: true,
@@ -253,4 +256,32 @@ func (r *PodCheckpointReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&forensicsv1alpha1.PodCheckpoint{}).
 		Complete(r)
+}
+
+// buildWorkerJobName returns a Job name derived from a PodCheckpoint's name
+// that is guaranteed to stay inside the 63-character Kubernetes label limit.
+// For short names the legacy "<name>-job" form is kept verbatim so existing
+// jobs continue to reconcile; for names that would overflow, the PodCheckpoint
+// name is truncated and a short sha256 fingerprint is appended to keep the
+// result unique and deterministic (#20).
+func buildWorkerJobName(podCheckpointName string) string {
+	const max = 63
+	const suffix = "-job"
+
+	name := podCheckpointName + suffix
+	if len(name) <= max {
+		return name
+	}
+
+	sum := sha256.Sum256([]byte(podCheckpointName))
+	hashSuffix := "-" + hex.EncodeToString(sum[:])[:8] + suffix
+	prefixBudget := max - len(hashSuffix)
+	if prefixBudget < 0 {
+		prefixBudget = 0
+	}
+	prefix := podCheckpointName
+	if len(prefix) > prefixBudget {
+		prefix = prefix[:prefixBudget]
+	}
+	return prefix + hashSuffix
 }
