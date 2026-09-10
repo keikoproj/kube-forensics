@@ -6,7 +6,7 @@ services:
 language: go
 
 go:
-- 1.12.x
+- 1.26.x
 
 git:
   depth: 1

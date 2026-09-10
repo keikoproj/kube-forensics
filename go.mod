@@ -1,6 +1,6 @@
 module github.com/keikoproj/kube-forensics
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/go-logr/logr v0.1.0
