@@ -1,0 +1,42 @@
+name: unit-test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  unit-test:
+    if: github.repository_owner == 'keikoproj'
+    name: unit-test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v7
+
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version-file: go.mod
+        cache: true
+
+    - name: Install kubebuilder envtest binaries
+      env:
+        KUBEBUILDER_VERSION: "2.3.2"
+        ARCH: amd64
+      run: |
+        curl -fsSL -o kubebuilder.tar.gz \
+          "https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${KUBEBUILDER_VERSION}/kubebuilder_${KUBEBUILDER_VERSION}_linux_${ARCH}.tar.gz"
+        tar -xzf kubebuilder.tar.gz
+        sudo mv "kubebuilder_${KUBEBUILDER_VERSION}_linux_${ARCH}" /usr/local/kubebuilder
+        echo "/usr/local/kubebuilder/bin" >> "${GITHUB_PATH}"
+
+    - name: Test
+      run: make cover
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v7
+      with:
+        files: ./cover.out
+        token: ${{ secrets.CODECOV_TOKEN }}

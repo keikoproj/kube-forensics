@@ -12,8 +12,12 @@ export GO111MODULE = on
 
 all: manager
 
-# Run tests
-test: generate fmt vet manifests
+# Run tests.
+# generate/manifests are not dependencies: controller-gen v0.2.0-beta.2
+# panics on Go 1.26 (old go/types). Generated files are committed.
+# Envtest expects kube-apiserver/etcd/kubectl in /usr/local/kubebuilder/bin
+# (kubebuilder v2.x tarball) or TEST_ASSET_*.
+test: fmt vet
 	go test ${PKGS} ${TESTARGS}
 
 cover: TESTARGS=-coverprofile=cover.out
@@ -74,7 +78,7 @@ docker-push:
 # download controller-gen if necessary
 controller-gen:
 ifeq (, $(shell which controller-gen))
-	go get sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.0-beta.2
+	go install sigs.k8s.io/controller-tools/cmd/controller-gen@v0.2.0-beta.2
 CONTROLLER_GEN=$(shell go env GOPATH)/bin/controller-gen
 else
 CONTROLLER_GEN=$(shell which controller-gen)
