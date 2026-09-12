@@ -1,0 +1,47 @@
+name: golangci-lint
+permissions:
+  contents: read        # Needed to check out the repository
+  pull-requests: write  # Needed to post lint results as PR comments
+
+on:
+  pull_request:
+  push:
+    branches: [ "master" ]
+
+env:
+  # Pin Go to go.mod, not "stable". Prebuilt golangci-lint binaries cannot
+  # load a newer GOROOT than they were compiled with (v2.11.4 is Go 1.26).
+  # Using stable=go1.27 caused: panic: file requires newer Go version go1.27
+  # (application built with go1.26). Bump GOLANGCI_LINT_VERSION when go.mod
+  # advances past the Go version used to build the pinned linter.
+  GOLANGCI_LINT_VERSION: v2.11.4
+
+jobs:
+  detect-modules:
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.set-modules.outputs.modules }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - id: set-modules
+        run: echo "modules=$(go list -m -json | jq -s '.' | jq -c '[.[].Dir]')" >> $GITHUB_OUTPUT
+
+  golangci-lint:
+    needs: detect-modules
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: golangci-lint ${{ matrix.modules }}
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: ${{ env.GOLANGCI_LINT_VERSION }}
+          working-directory: ${{ matrix.modules }}

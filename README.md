@@ -161,8 +161,8 @@ Please see [DEVELOPER.md](.github/DEVELOPER.md).
 
 <!-- Markdown links -->
 
-[BuildStatusImg]: https://travis-ci.org/keikoproj/kube-forensics.svg?branch=master
-[BuildMasterUrl]: https://travis-ci.org/keikoproj/kube-forensics
+[BuildStatusImg]: https://github.com/keikoproj/kube-forensics/actions/workflows/unit-test.yaml/badge.svg?branch=master
+[BuildMasterUrl]: https://github.com/keikoproj/kube-forensics/actions/workflows/unit-test.yaml
 
 [GithubMaintainedUrl]: https://github.com/keikoproj/kube-forensics/graphs/commit-activity
 [GithubPrsUrl]: https://github.com/keikoproj/kube-forensics/pulls

@@ -57,6 +57,10 @@ go run ./main.go
 
 Using the `Makefile` you can run basic unit tests.
 
+Envtest (used by `./api/...` and `./controllers/...`) looks for
+`kube-apiserver`, `etcd`, and `kubectl` under `/usr/local/kubebuilder/bin`.
+Install the kubebuilder v2.3.2 tarball (same as CI) or set `TEST_ASSET_*`.
+
 ### Example
 
 ```bash
